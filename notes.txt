@@ -1,0 +1,107 @@
+Jest: Es un test runner o test framework.
+React testing library: Coleccion de utilidades que hace más facil testear nuestra app de react.
+
+Instalar:
+  -React testing libreary: @testing-library/react
+  -Jest DOM: @testing-library/jest-dom. Añade algunas clausulas al expect
+    para esperar cosas, como esperar a que un elemento tenga un texto como
+    contenido.
+
+
+Importar:
+  -React.
+  -reder: @testing-library/react
+  -@testing-library/jest-dom/extend-expect: Toda la libreria (que se 
+    auto ejecute).
+  -El componente a probar.
+
+Renderizar un componente:
+  -A una variable le damos como valor render(), y le damos por parametro
+    el componente. Lo colocamos como JSX (<Com />) y le damos sus props.
+  -Esta variable ahora tiene un conjunto de elementos y metodos.
+  -La idea será usar estos metodos, y sí pasan, la prueba pasa.
+  -Esta variable tiene un elemento container, que es como sí tuviera
+  todo el contenido del componente en html.
+
+Queries:
+  -Son los metodos que podemos usar al renderizar un componente.
+  -Podemos verlos en: https://testing-library.com/docs/dom-testing-library/cheatsheet
+  -En el cuadro nos dice que tipo de metodo usar, dependiendo de las necesidades,
+    y nos indica que nos retorna dicho metodo.
+  -En este orden, sería: Que retorna sí no hubo match (throw=error), que sí
+    hubo un match, qué sí hay mas de un match, y sí es necesario usar await
+    al usar el metodo.
+  -Más abajo, vendrá ordenado por recomendación de uso, los metodos que se
+    pueden usar segun el cuadro anterior.
+
+Ver sí se renderizo un componente, o sí el componente tiene un texto:
+  -Veremos sí el componente tiene un texto, ya que sí tiene ese texto, ya
+    se sabra que si se esta renderizando.
+  -componente.getByText('Texto ejemplo'): Probamos sí se renderizo, viendo
+    sí el componente renderiza ese texto o no. En caso de que no tenga ese
+    texto, falla la prueba.
+  -expect - Otra forma de hacerlo: Usamos el expect() y le pasamos el 
+    elemento container del componente. Y del expect usamos el 
+    toHaveTextContent() y como parametro, el texto que estamos esperando 
+    que ese componente tenga.
+  -Es importante saber que este texto lo puede tener en cualquier parte.
+
+-Nota: Podemos traer un elemento del componente, usando los queries del
+  componente, y asignandoselos a una variable.  
+
+Ver un elemento (etiqueta-selector) dentro del componente:
+  -Esto no es una prueba, sino que es en caso de que queramos ver un 
+    selector en concreto.
+  -Usaremos container.querySelector() y como parametro un texto con el 
+    selector (sin <>).
+  -Sí consoleamos el metodo prettyDOM(selector) veremos el elemento en
+    el arbol de elementos.
+  -prettyDOM es de @testing-library/dom
+
+Probar sí un boton esta ejecutando su acción:
+  -Supongamos la situación de que el componente recibe como prop un metodo,
+    y un boton de este ejecuta ese metodo.
+  -Para probar esto, vamos a renderizar este componente, y como valor
+    de esa prop, vamos a pasar una constante (un mock).
+  -Esta debe tener como valor la ejecución de jest.fn() (no es necesario
+    importar jest, al menos con CRA).
+  -Del componente traemos el boton por medio del texto.
+  -Para activar este boton, usamos el metodo click() de fireEvent 
+    (@testing-library/react). Como parametro le pasamos el boton.
+  -Ahora, debemos ver sí se llamo el mock las veces que disparamos este
+    evento (las veces que ejecutamos el click), hay 2 formas.
+  1-En el expect colocamos mockHandler, y su metodo toHaveBeenCalledTimes(n)
+    donde n es las veces que esperamos se ejecutara el metodo.
+  2-Esperamos que mockHandler.mock.calls, tenga un tamaño de n, esto lo
+    hacemos con el metodo toHaveLength(n).
+
+Probar sí el elemento tiene estilos:
+  -Tenemos que traer el elemento.
+  -Usamos:   expect(element).toHaveStyle(estilos).
+  -Los estilos pueden ser:
+    .Un objeto con estilos: Sí la propiedad es de dos palabras, usar camel
+      Case.
+    .Un string con estilos: Separados por ;
+    .Un template string.
+  -Los estilos deben ser todos los que tenga el elemento, no solo unos.
+  -Tambien se puede probar que al dar click en un elemento, otro obtenga ciertos estilos.
+  -NOTA: Solo me funcionó cuando los estilos están en la línea.
+
+Seleccionar elementos por Id:
+  -Cuando queremos usar una query por el id del elemento, no estamos usando el Id del elemento
+    en sí, mas bien, debemos colocar a ese elemento una prop data-testid con un valor.
+  -El problema con esto, es que, cada vez que usamos un data-testid, es como que creamos otro
+    cliente para la app, y los test, no ven lo mismo que los usuarios, por esto, debe ser la
+    ultima opción.
+  -Pero, al hacerlo, debemos hacerlo con un elemento que sea el padre de varios, y de ese padre,
+    sacar ese hijo que necesitamos probar.
+  -Si no funciona asi, al elemento le ponemos el data-testid.
+
+Formularios:
+  -Con los formularios, el tema es el mismo, pero el fireEvent no dispara el click, sino el submit.
+
+coverage:
+  -npm test -- --coverage.
+  -Veremos cuanto porciento tenemos cubierto con tests.
+  -Stats: Porcentaje cubierto.
+  -Branch: Si tiene un if, que entre por uno y por otro.
