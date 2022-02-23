@@ -36,7 +36,6 @@ describe('<App />', () => {
   test('Styles', () => {
     //Nota: me funciona pero solo cuando tengo estilos en linea
     const h1 = view.getByText('Hola mundo testing')
-    console.log(h1)
     expect(h1).toHaveStyle({ color: 'green' })
   })
 })

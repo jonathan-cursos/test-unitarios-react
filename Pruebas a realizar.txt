@@ -3,3 +3,10 @@
 -Probar que un formulario se esta enviando.
 -Probar que un componente tiene unos estilos.
 -Probar que un componente tiene estilos cuando se activo un evento.
+
+Hooks:
+  -Probar que el hook (current) sea definido.
+  -Que los elementos tengan los valores esperados, si no son funciones u objetos.
+  -Que si un elemento es una función, al invocar el hook tambien lo sea.
+  -Que al llamar una función del hook, esta nos regrese lo que esperamos, o haga
+    lo esperado.
